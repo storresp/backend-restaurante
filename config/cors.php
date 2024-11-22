@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['GET', 'POST', 'PUT'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['https://storresp.github.io/frontend-empleados/gestionpedidos.html', '*.example.org'],
 
     'allowed_origins_patterns' => [],
 
