@@ -17,13 +17,13 @@ return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['GET', 'POST', 'PUT'],
+    'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://storresp.github.io/frontend-empleados/gestionpedidos.html', 'https://storresp.github.io/frontend-empleados/index.html','https://storresp.github.io/frontend-restaurante/pago.html'],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*',' ','no-cors'],
+    'allowed_headers' => ['*','','no-cors'],
 
     'exposed_headers' => [],
 
