@@ -35,25 +35,42 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'cliente_id' => 'required|exists:clientes,id',
+        $data = $request->validate([
+            'estado' => 'required|string',
+            'precio_total' => 'required|numeric',
+            'cliente' => 'required|array',
+            'cliente.nombre' => 'required|string',
+            'cliente.numero_celular' => 'required|string',
+            'cliente.direccion' => 'required|string',
             'platos' => 'required|array',
             'platos.*.id' => 'required|exists:platos,id',
-            'platos.*.cantidad' => 'required|integer|min:1',
+            'platos.*.nombre' => 'required|string',
+            'platos.*.precio' => 'required|numeric',
+            'platos.*.pivot.cantidad' => 'required|integer',
         ]);
 
+        // Crear o obtener el cliente
+        $cliente = Cliente::create([
+            'nombre' => $data['cliente']['nombre'],
+            'numero_celular' => $data['cliente']['numero_celular'],
+            'direccion' => $data['cliente']['direccion']
+        ]);
+
+        // Crear el pedido
         $pedido = Pedido::create([
-            'cliente_id' => $validated['cliente_id'],
+            'estado' => $data['estado'],
+            'precio_total' => $data['precio_total'],
+            'cliente_id' => $cliente->id
         ]);
 
-        foreach ($validated['platos'] as $plato) {
-            $pedido->platos()->attach($plato['id'], ['cantidad' => $plato['cantidad']]);
+        // Asociar platos al pedido
+        foreach ($data['platos'] as $plato) {
+            $pedido->platos()->attach($plato['id'], ['cantidad' => $plato['pivot']['cantidad']]);
         }
 
-        $pedido->calcularPrecioTotal();
-
-        return $pedido->load('platos', 'cliente');
+        return response()->json(['success' => true, 'pedido' => $pedido], 201);
     }
+
 
     /**
      * Display the specified resource.
