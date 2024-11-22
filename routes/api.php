@@ -24,3 +24,5 @@ Route::apiResource('/pedidos', PedidoController::class)->middleware(AuthMiddlewa
 Route::put('/pedidos/{id}', [PedidoController::class, 'update'])->middleware(AuthMiddleware::class);
 
 Route::apiResource('platos', PlatoController::class);
+
+Route::post('/pedidos', [PedidoController::class, 'store']);
